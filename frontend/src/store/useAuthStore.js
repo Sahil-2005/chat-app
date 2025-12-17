@@ -10,7 +10,7 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const useAuthStore = create((set, get) => ({
     authUser: null,
     isSigningUp: false,
-    isLoggingIng: false,
+    isLoggingIn: false,
     isUpdatingProfile: false,
     onlineUsers: [],
     socket: null,
@@ -55,7 +55,7 @@ export const useAuthStore = create((set, get) => ({
     },
     
     logout: async () => {
-        set( { isloggingIng: true } )
+        set( { isLoggingIn: true } )
         try {
             await axiosInstance.post('/auth/logout');
             set( {authUser: null} );
@@ -63,10 +63,13 @@ export const useAuthStore = create((set, get) => ({
             get().disConnectSocket();
         } catch (error) {
             toast.error(error.response.data.message);
+        } finally {
+            set( { isLoggingIn: false } )
         }
     }, 
     
     login: async (data) => {
+        set( { isLoggingIn: true } )
         try {
             const res = await axiosInstance.post('/auth/login', data)
             set( {authUser: res.data})
@@ -76,7 +79,7 @@ export const useAuthStore = create((set, get) => ({
         } catch (error) {
             toast.error(error.response.data.message);
         } finally {
-            set( { isloggingIng: false } )
+            set( { isLoggingIn: false } )
         }
     },
 
