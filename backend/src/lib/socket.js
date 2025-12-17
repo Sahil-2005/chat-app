@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         // origin: ['http://localhost:5173']
-        origin: ['http://localhost:5173', 'https://chat-app-1-uxbk.onrender.com']
+        origin: ['http://localhost:5173', 'https://chat-app-1-uxbk.onrender.com', 'https://chat-app-kohl-zeta.vercel.app/']
     }
 })
 
