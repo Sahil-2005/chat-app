@@ -1,6 +1,6 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import authRoutes from "./routes/auth-route.js";
-import dotenv from 'dotenv';
 
 import path from 'path'
 import { connectDB } from './lib/db.js';
@@ -24,7 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  // origin: 'http://localhost:5173',
+  origin: 'https://chat-app-1-uxbk.onrender.com',
   credentials: true,
 }))
 
