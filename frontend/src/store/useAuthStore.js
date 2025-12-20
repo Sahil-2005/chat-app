@@ -158,9 +158,13 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
+      console.log("Signup response:", res.data); // Debug log
       // Save token to localStorage for cross-domain auth
       if (res.data.token) {
         localStorage.setItem("authToken", res.data.token);
+        console.log("Token saved to localStorage"); // Debug log
+      } else {
+        console.log("No token in response!"); // Debug log
       }
       set({ authUser: res.data });
       toast.success("Account created successfully");
@@ -176,9 +180,13 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
+      console.log("Login response:", res.data); // Debug log
       // Save token to localStorage for cross-domain auth
       if (res.data.token) {
         localStorage.setItem("authToken", res.data.token);
+        console.log("Token saved to localStorage"); // Debug log
+      } else {
+        console.log("No token in response!"); // Debug log
       }
       set({ authUser: res.data });
       toast.success("Logged in successfully");
