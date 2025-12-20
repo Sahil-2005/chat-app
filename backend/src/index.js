@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://chat-app-kohl-zeta.vercel.app/'],
+  origin: ['http://localhost:5173', 'https://chat-app-kohl-zeta.vercel.app'],
   credentials: true,
 }))
 
