@@ -158,6 +158,10 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
+      // Save token to localStorage for cross-domain auth
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+      }
       set({ authUser: res.data });
       toast.success("Account created successfully");
       get().connectSocket();
@@ -172,6 +176,10 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
+      // Save token to localStorage for cross-domain auth
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+      }
       set({ authUser: res.data });
       toast.success("Logged in successfully");
       get().connectSocket();
@@ -185,6 +193,8 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
+      // Remove token from localStorage
+      localStorage.removeItem("authToken");
       get().disConnectSocket();
       set({ authUser: null, onlineUsers: [] });
       toast.success("Logged out successfully");
@@ -211,10 +221,16 @@ export const useAuthStore = create((set, get) => ({
 
     if (!authUser?._id || socket) return;
 
+    // Get token from localStorage for socket auth
+    const token = localStorage.getItem("authToken");
+
     const newSocket = io(BASE_URL, {
       withCredentials: true,
       query: {
         userId: authUser._id,
+      },
+      auth: {
+        token: token,
       },
       transports: ["websocket"], // avoids polling CORS issues
     });

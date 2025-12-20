@@ -32,14 +32,15 @@ export const signup = async (req, res) => {
         })
 
         if(newUser) {
-            generatedTokens(newUser._id, res)                
+            const token = generatedTokens(newUser._id, res)                
             await newUser.save()
 
             res.status(200).json({
                 _id: newUser._id,
                 fullName: newUser.fullName,
                 email: newUser.email,
-                profilePic: newUser.profilePic
+                profilePic: newUser.profilePic,
+                token: token
             })
         } else {
             res.status(400).json({message: 'Invalid User Data'})
@@ -69,12 +70,13 @@ export const login = async (req, res) => {
             return res.status(400).json({message: 'Invalid credentials'})
         }
 
-        generatedTokens(user._id, res)
+        const token = generatedTokens(user._id, res)
         res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
-            profilePic: user.profilePic
+            profilePic: user.profilePic,
+            token: token
         })
     } catch (error) {
         console.log("Error in login-credentials", error.message);
